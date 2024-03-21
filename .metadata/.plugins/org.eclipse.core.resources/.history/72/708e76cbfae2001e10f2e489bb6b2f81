@@ -1,0 +1,23 @@
+/*
+ * uart.h
+ *
+ *  Created on: Mar 4, 2024
+ *      Author: lgomez
+ */
+
+#ifndef INC_UART_H_
+#define INC_UART_H_
+
+
+// Función personalizada para enviar mensajes a través de UART3
+void uart_print(const char *message);
+void uart_vector_print(uint16_t data_len, const uint8_t* data);
+// Función para enviar comando al SPS30 y esperar una respuesta
+void uart_send_command(const uint8_t *command, uint16_t commandSize);
+
+// Función para iniciar la recepción de datos de forma asincrónica
+void uart_receive_async(uint8_t *dataBuffer, uint16_t bufferSize);
+
+
+
+#endif /* INC_UART_H_ */

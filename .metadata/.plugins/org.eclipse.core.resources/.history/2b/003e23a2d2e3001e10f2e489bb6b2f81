@@ -1,0 +1,64 @@
+/*
+ * shdlc.h
+ *
+ * Descripción: Define las estructuras y funciones para el manejo de comunicaciones SHDLC.
+ * Autor: Luis Gómez P.
+ * Derechos de Autor: (C) 2023 Luis Gómez P. EIRL
+ * Licencia: GNU General Public License v3.0
+ *
+ * Este programa es software libre: puedes redistribuirlo y/o modificarlo
+ * bajo los términos de la Licencia Pública General GNU publicada por
+ * la Free Software Foundation, ya sea la versión 3 de la Licencia, o
+ * (a tu elección) cualquier versión posterior.
+ *
+ * Este programa se distribuye con la esperanza de que sea útil,
+ * pero SIN NINGUNA GARANTÍA; sin siquiera la garantía implícita
+ * de COMERCIABILIDAD o APTITUD PARA UN PROPÓSITO PARTICULAR. Ver la
+ * Licencia Pública General GNU para más detalles.
+ *
+ * Deberías haber recibido una copia de la Licencia Pública General GNU
+ * junto con este programa. Si no es así, visita <http://www.gnu.org/licenses/>.
+ *
+ * SPDX-License-Identifier: GPL-3.0-only
+ *
+ */
+
+#ifndef INC_SHDLC_H_
+#define INC_SHDLC_H_
+
+/** @file
+ ** @brief Definiciones y declaraciones para la interacción con comunicaciones SHDLC.
+ **/
+
+/* === Inclusión de archivos de cabecera ======================================================== */
+#include <stdint.h>
+#include <stddef.h>
+
+/* === Definiciones de macros públicas ========================================================== */
+#define FRAME_DATA_VECTOR_SIZE_MOSI 60
+#define FRAME_DATA_VECTOR_SIZE_MISO 60
+
+/* === Declaraciones de tipos de datos públicos ================================================= */
+typedef struct Shdlc_FrameMosi{
+    uint8_t adr;
+    uint8_t cmd;
+    uint8_t myVector[FRAME_DATA_VECTOR_SIZE_MOSI];
+    uint8_t chk;
+    uint8_t longframe;
+} Shdlc_FrameMosi;
+
+typedef struct Shdlc_FrameMiso{
+    uint8_t adr;
+    uint8_t cmd;
+    uint8_t lon;
+    uint8_t myVector[FRAME_DATA_VECTOR_SIZE_MISO];
+    uint8_t chk;
+    uint8_t longframe;
+} Shdlc_FrameMiso;
+
+/* === Declaraciones de funciones públicas ====================================================== */
+int calculateDataSize(const uint8_t* input, size_t inputSize);
+Shdlc_FrameMiso SHDLC_GetFrameMiso(void);
+
+#endif /* INC_SHDLC_H_ */
+

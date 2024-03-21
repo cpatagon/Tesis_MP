@@ -1,0 +1,35 @@
+/*
+ * shdlc.h
+ *
+ *  Created on: 16-03-2024
+ *      Author: lgomez
+ */
+
+
+
+#ifndef INC_SHDLC_H_
+#define INC_SHDLC_H_
+
+#include <stdint.h>
+#include <stddef.h>
+
+
+typedef struct Shdlc_FrameMosi{
+	uint8_t adr;
+	uint8_t cmd;
+	uint8_t myVector[FRAME_DATA_VECTOR_SIZE_MOSI];
+	uint8_t chk;
+} Shdlc_FrameMosi;
+
+typedef struct Shdlc_FrameMiso{
+	uint8_t adr;
+	uint8_t cmd;
+	uint8_t lon;
+	uint8_t myVector[FRAME_DATA_VECTOR_SIZE_MIS0];
+	uint8_t chk;
+} Shdlc_FrameMiso;
+
+int  calculateDataSize(const uint8_t* input, size_t inputSize);
+Shdlc_FrameMiso SHDLC_GetFrameMiso(void);
+
+#endif /* INC_SHDLC_H_ */

@@ -1,0 +1,60 @@
+/*
+ * shdlc.c
+ *
+ *  Created on: 16-03-2024
+ *      Author: lgomez
+ */
+
+
+#include <stdio.h>
+#include <stdint.h>
+#include <string.h>
+#include "shdlc.h"
+
+
+
+
+
+
+Shdlc_FrameMiso SHDLC_GetFrameMiso(void) {
+    Shdlc_FrameMiso frame = {
+        .adr = 0x01,
+        .cmd = 0x02,
+        .lon = 3, // Supongamos que solo hay 3 bytes significativos de datos
+        .myVector = {0xAA, 0xBB, 0xCC}, // Datos de ejemplo
+        .chk = 0xFF // Checksum de ejemplo
+    };
+    return frame;
+}
+
+
+
+int calculateDataSize(const uint8_t* input, size_t inputSize) {
+	int start = -1;
+	    int end = -1;
+
+	    // Buscar el primer delimitador 0xE7.
+	    for (size_t i = 0; i < inputSize; ++i) {
+	        if (input[i] == 0x7E) {
+	            start = i + 1; // Comenzar después del primer 0xE7
+	            break;
+	        }
+	    }
+
+	    // Buscar el segundo delimitador 0xE7.
+	    for (size_t i = start; i < inputSize; ++i) {
+	        if (input[i] == 0x7E) {
+	            end = i;
+	            break;
+	        }
+	    }
+
+	    // Verificar si se encontraron ambos delimitadores.
+	    if (start == -1 || end == -1 || start >= end) {
+	        return -1; // No se encontró la secuencia válida.
+	    }
+
+	    // Calcular la longitud de los datos a copiar y asegurarse de que no exceda el buffer de salida.
+	    size_t dataLength = end - start;
+	    return dataLength;
+}

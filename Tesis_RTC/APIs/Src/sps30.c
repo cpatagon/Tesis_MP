@@ -1,0 +1,300 @@
+/*
+ * Nombre del archivo: sps30_control.c
+ * Descripción: Implementación de funciones para controlar el sensor SPS30 a través de UART.
+ * Autor: Luis Gómez P.
+ * Derechos de Autor: (C) 2023 Luis Gómez P. EIRL
+ * Licencia: GNU General Public License v3.0
+ *
+ * Este programa es software libre: puedes redistribuirlo y/o modificarlo
+ * bajo los términos de la Licencia Pública General GNU publicada por
+ * la Free Software Foundation, ya sea la versión 3 de la Licencia, o
+ * (a tu elección) cualquier versión posterior.
+ *
+ * Este programa se distribuye con la esperanza de que sea útil,
+ * pero SIN NINGUNA GARANTÍA; sin siquiera la garantía implícita
+ * de COMERCIABILIDAD o APTITUD PARA UN PROPÓSITO PARTICULAR. Ver la
+ * Licencia Pública General GNU para más detalles.
+ *
+ * Deberías haber recibido una copia de la Licencia Pública General GNU
+ * junto con este programa. Si no es así, visita <http://www.gnu.org/licenses/>.
+ *
+ * SPDX-License-Identifier: GPL-3.0-only
+ *
+ */
+
+/** @file sps30_control.c
+ ** @brief Implementación de control para el sensor SPS30 utilizando UART.
+ **/
+
+/* === Inclusiones de archivos de cabecera ===================================================== */
+#include "sps30.h"
+#include "usart.h"
+#include "uart.h"
+#include "shdlc.h"
+#include <stdio.h> // Para sprintf
+#include <string.h> // Para strlen
+
+/* === Definiciones de macros ================================================================== */
+// Definiciones de comandos, frames y códigos de error específicos para el SPS30.
+
+#define BUFFER_SIZE 7
+#define BUFFER_SIZE_READ_DATA 60
+#define BUFFER_SIZE_SERIAL_NUMBER 30
+#define BUFFER_SIZE_NUMBER 30
+#define BUFFER_SIZE_STOP_MEASUREMENT 8
+#define BUFFER_SIZE_SLEEP 8
+#define BUFFER_SIZE_WAKEUP 8
+#define BUFFER_SIZE_RESPONSE 50
+#define BUFFER_PRINT_CONCENTRATION 100
+
+
+#define MENSAJE_SIZE_RESPUESTA "\nLongitud de respuesta:\n %d <--"
+
+// Constantes para los mensajes
+#define MSG_INICIO_MEDICION "\n Inicio_medicion:\n"
+#define MSG_RESPUESTA_INICIO_MEDICION "\n Respuesta inicio:\n"
+#define MSG_SOLICITAR "\n Solicitar:\n"
+#define MSG_RESPUESTA "\n Respuesta:\n"
+#define MSG_DATOS_RESPUESTA "\n Respuesta:\n"
+#define MSG_RESPUESTA_CON_BYTESTUFFING "\n Respuesta con ByteStuffing:\n"
+#define MSG_LONGITUD_RESPUESTA "\nLongitud de la respuesta:\n %d bytes\n"
+
+// Constantes para formatear la impresión de las concentraciones
+#define FORMATO_CONCENTRACION_PM1_0 "\nConcentracion de PM1.0:\n %f ug/m3\n"
+#define FORMATO_CONCENTRACION_PM2_5 "\nConcentracion de PM2.5:\n %f ug/m3\n"
+#define FORMATO_CONCENTRACION_PM4_0 "\nConcentracion de PM4.0:\n %f ug/m3\n"
+#define FORMATO_CONCENTRACION_PM10 "\nConcentracion de PM10:\n %f ug/m3\n"
+
+
+#define DELAY_WAKEUP 50
+#define DELAY_START_MEASUREMENT 2
+#define DELAY_STOP_MEASUREMENT 0
+
+#define CLEAR_VAR 0
+#define CERO 0
+
+
+/* === Declaraciones de tipos de datos privados ================================================ */
+
+/* === Declaraciones de variables privadas ===================================================== */
+
+/* === Declaraciones de funciones privadas ===================================================== */
+
+/* === Definiciones de variables públicas ====================================================== */
+
+/* === Definiciones de variables privadas ====================================================== */
+
+/* === Implementación de funciones privadas ==================================================== */
+
+/* === Implementación de funciones públicas ==================================================== */
+
+/**
+ * @brief Inicia la medición en el sensor SPS30.
+ *
+ * Esta función envía un comando al sensor SPS30 para comenzar la medición de partículas.
+ * Utiliza la comunicación UART para enviar el comando y recibir la confirmación del sensor.
+ */
+void SPS30_StartMeasurement(void) {
+    // Definición de variables
+    uint8_t startCmd[] = SPS30_FRAME_START_MEASUREMENT; // Comando para iniciar la medición
+    uint8_t dataBuf[BUFFER_SIZE] = {0}; // Buffer para almacenar la respuesta del sensor
+    char respuestaStr[BUFFER_SIZE_RESPONSE]; // Buffer para el mensaje de longitud de respuesta
+
+    // Envío del comando de inicio de medición
+    uart_print(MSG_INICIO_MEDICION); // Notifica por UART el inicio de la operación
+    uart_vector_print(sizeof(startCmd), startCmd); // Muestra el comando enviado
+    uart_send_command(startCmd, sizeof(startCmd)); // Envía el comando al sensor SPS30
+    HAL_Delay(DELAY_START_MEASUREMENT); // Espera para el procesamiento del comando
+
+    // Recepción y procesamiento de la respuesta
+    uart_receive_async(dataBuf, BUFFER_SIZE); // Recepción asincrónica de la respuesta
+    uart_print(MSG_RESPUESTA_INICIO_MEDICION); // Notifica la recepción de la respuesta
+    uart_vector_print(BUFFER_SIZE, dataBuf); // Muestra la respuesta recibida
+
+    // Cálculo y visualización de la longitud de la respuesta
+    int longRespuesta = SHDLC_CalculateDataSize(dataBuf, sizeof(dataBuf)); // Calcula la longitud de los datos útiles
+    snprintf(respuestaStr, sizeof(respuestaStr), MENSAJE_SIZE_RESPUESTA, longRespuesta); // Formatea el mensaje de longitud
+    uart_print(respuestaStr); // Imprime la longitud de la respuesta
+}
+
+/**
+ * @brief Detiene la medición en el sensor SPS30.
+ *
+ * Esta función envía un comando al sensor SPS30 para detener la medición de partículas.
+ * A pesar de la detención, los datos previamente medidos se mantienen hasta que el sensor sea activado nuevamente.
+ */
+void SPS30_StopMeasurement(void) {
+    // Variables
+    uint8_t stopCmd[] = SPS30_FRAME_STOP_MEASUREMENT; // Define el comando específico para detener la medición.
+    uint8_t dataBuf[BUFFER_SIZE_STOP_MEASUREMENT]; // Buffer para almacenar la respuesta del sensor.
+    memset(dataBuf, CLEAR_VAR, sizeof(dataBuf)); // Inicializa el buffer de datos a cero.
+
+    // Envío del comando de detención de medición
+    uart_print(MSG_SOLICITAR); // Notifica por UART la solicitud de detención.
+    uart_vector_print(sizeof(stopCmd), stopCmd); // Muestra el comando que será enviado al sensor.
+
+    // Comunicación con el sensor SPS30
+    uart_send_receive(stopCmd, sizeof(stopCmd), dataBuf, BUFFER_SIZE_STOP_MEASUREMENT); // Envía el comando de detención y espera la respuesta.
+    HAL_Delay(DELAY_STOP_MEASUREMENT); // Opcional: Retraso para asegurar que el sensor procese el comando antes de continuar.
+
+    // Procesamiento de la respuesta del sensor
+    uart_print(MSG_RESPUESTA); // Indica que se ha recibido una respuesta del sensor.
+    uart_vector_print(BUFFER_SIZE_STOP_MEASUREMENT, dataBuf); // Muestra la respuesta recibida.
+
+    // Análisis de la respuesta
+    int longRespuesta = SHDLC_CalculateDataSize(dataBuf, sizeof(dataBuf)); // Calcula la longitud de la respuesta útil.
+    char respuestaStr[BUFFER_SIZE_RESPONSE]; // Prepara un buffer para el mensaje de longitud de respuesta.
+    snprintf(respuestaStr, sizeof(respuestaStr), MENSAJE_SIZE_RESPUESTA, longRespuesta); // Formatea el mensaje con la longitud de la respuesta.
+    uart_print(respuestaStr); // Imprime la longitud de la respuesta.
+}
+
+
+
+/**
+ * @brief Pone el sensor SPS30 en modo de sueño (Sleep mode).
+ *
+ * Envía un comando al sensor SPS30 para reducir su consumo energético poniéndolo en modo de sueño.
+ * En este estado, el sensor consume menos energía pero no realiza mediciones.
+ */
+void SPS30_Sleep(void) {
+    // Comando para leer los datos de medición (Reemplaza con el comando real)
+    uint8_t readCmd[] = SPS30_FRAME_SLEEP;
+    uint8_t dataBuf[BUFFER_SIZE_SLEEP]; // Asegúrate de que este buffer sea adecuado para los datos
+    memset(dataBuf, CLEAR_VAR, sizeof(dataBuf));
+    uart_print(MSG_SOLICITAR);
+    uart_vector_print(sizeof(readCmd),readCmd);
+    uart_send_receive(readCmd, sizeof(readCmd),dataBuf, BUFFER_SIZE_STOP_MEASUREMENT);
+    uart_print(MSG_RESPUESTA);
+    uart_vector_print(BUFFER_SIZE_SLEEP,dataBuf);
+
+    int longrespuesta =  SHDLC_CalculateDataSize(dataBuf, sizeof(dataBuf));
+    // Convierte longrespuesta a una cadena para imprimir
+    char respuestaStr[BUFFER_SIZE_RESPONSE];
+    snprintf(respuestaStr, sizeof(respuestaStr), MENSAJE_SIZE_RESPUESTA , longrespuesta);
+    uart_print(respuestaStr);
+}
+
+
+/**
+ * @brief Lee los datos de medición del sensor SPS30.
+ *
+ * Solicita al sensor SPS30 los datos de medición actuales y los recibe a través de UART.
+ * Los datos incluyen concentraciones de partículas de diferentes tamaños.
+ */
+void SPS30_ReadData(void) {
+    // Preparación del comando para solicitar los datos de medición
+    uint8_t readCmd[] = SPS30_FRAME_READ_MEASUREMENT;
+    uint8_t dataBuf[BUFFER_SIZE_READ_DATA]; // Buffer para almacenar los datos recibidos
+    uint8_t originalData[BUFFER_SIZE_READ_DATA]; // Buffer para almacenar los datos tras revertir ByteStuffing
+    ConcentracionesPM concentraciones; // Estructura para almacenar las concentraciones
+
+    // Limpieza inicial del buffer de datos
+    memset(dataBuf, CLEAR_VAR, sizeof(dataBuf));
+
+    // Solicitar datos al sensor
+    uart_print(MSG_SOLICITAR);
+    uart_vector_print(sizeof(readCmd), readCmd); // Imprime el comando enviado
+    uart_send_receive(readCmd, sizeof(readCmd), dataBuf, BUFFER_SIZE_READ_DATA); // Envía comando y recibe datos
+    uart_print(MSG_RESPUESTA);
+    uart_vector_print(BUFFER_SIZE_READ_DATA, dataBuf); // Imprime la respuesta recibida
+
+    // Procesamiento de la respuesta para revertir ByteStuffing
+    SHDLC_revertByteStuffing(dataBuf, sizeof(dataBuf), originalData);
+    uart_print(MSG_RESPUESTA_CON_BYTESTUFFING);
+    uart_vector_print(BUFFER_SIZE_READ_DATA, originalData); // Imprime los datos procesados
+
+    // Calcula la longitud de la respuesta útil
+    int longrespuesta = SHDLC_CalculateDataSize(originalData, sizeof(originalData));
+    char respuestaStr[BUFFER_SIZE_RESPONSE];
+    snprintf(respuestaStr, sizeof(respuestaStr), MSG_LONGITUD_RESPUESTA, longrespuesta);
+    uart_print(respuestaStr); // Imprime la longitud de la respuesta
+
+    // Carga los datos procesados en una estructura definida para su fácil manejo
+    Shdlc_FrameMiso Newframe = {};
+    SHDLC_LoadMyVector(&Newframe, originalData, longrespuesta);
+    uart_print(MSG_DATOS_RESPUESTA);
+    uart_vector_print(Newframe.lon, Newframe.myVector); // Imprime los datos finales
+
+    // Llena la estructura de concentraciones a partir de los datos finales
+    SHDLC_llenarConcentraciones(&concentraciones, Newframe.myVector);
+
+    // Formatea e imprime las concentraciones obtenidas
+    char buffer[BUFFER_PRINT_CONCENTRATION];
+    sprintf(buffer, FORMATO_CONCENTRACION_PM1_0, concentraciones.pm1_0);
+    uart_print(buffer);
+    sprintf(buffer, FORMATO_CONCENTRACION_PM2_5, concentraciones.pm2_5);
+    uart_print(buffer);
+    sprintf(buffer, FORMATO_CONCENTRACION_PM4_0, concentraciones.pm4_0);
+    uart_print(buffer);
+    sprintf(buffer, FORMATO_CONCENTRACION_PM10, concentraciones.pm10);
+    uart_print(buffer);
+}
+
+/**
+ * @brief Obtiene el número de serie del sensor SPS30.
+ *
+ * Envía un comando al sensor SPS30 para leer su número de serie y lo recibe a través de UART.
+ * El número de serie es único para cada sensor y puede ser usado para identificación.
+ */
+void SPS30_SerialNumber(void) {
+    // Comando para leer los datos de medición (Reemplaza con el comando real)
+    uint8_t readCmd[] = SPS30_FRAME_SERIAL_NUMBER;
+    uint8_t dataBuf[BUFFER_SIZE_SERIAL_NUMBER]; // Asegúrate de que este buffer sea adecuado para los datos
+    memset(dataBuf, CLEAR_VAR, sizeof(dataBuf));
+    uart_print(MSG_SOLICITAR);
+    uart_vector_print(sizeof(readCmd),readCmd);
+    uart_send_receive(readCmd, sizeof(readCmd),dataBuf, BUFFER_SIZE_SERIAL_NUMBER);
+    uart_print(MSG_RESPUESTA);
+    uart_vector_print(BUFFER_SIZE_SERIAL_NUMBER,dataBuf);
+
+    int longrespuesta =  SHDLC_CalculateDataSize(dataBuf, sizeof(dataBuf));
+    // Convierte longrespuesta a una cadena para imprimir
+    char respuestaStr[BUFFER_SIZE_RESPONSE];
+    snprintf(respuestaStr, sizeof(respuestaStr), MENSAJE_SIZE_RESPUESTA, longrespuesta);
+    uart_print(respuestaStr);
+}
+
+
+
+/**
+ * @brief Despierta el sensor SPS30 del modo de sueño.
+ *
+ * Envía un pulso y un comando al sensor SPS30 para despertarlo del modo de sueño.
+ * Una vez despierto, el sensor está listo para realizar mediciones nuevamente.
+ */
+void SPS30_WakeUP(void) {
+    // Comando para leer los datos de medición (Reemplaza con el comando real)
+	uint8_t Pulse = SPS30_PULSE_WAKE_UP;
+	uint8_t readCmd[] = SPS30_FRAME_WAKE_UP;
+    uint8_t dataBuf[BUFFER_SIZE_WAKEUP]; // Asegúrate de que este buffer sea adecuado para los datos
+    memset(dataBuf, CLEAR_VAR, sizeof(dataBuf));
+    uint8_t longdataBuf = sizeof(dataBuf);
+    uart_print(MSG_SOLICITAR);
+    uart_vector_print(sizeof(readCmd),readCmd);
+    uart_send_command(&Pulse,sizeof(Pulse));
+    HAL_Delay(DELAY_WAKEUP);
+    uart_send_receive(readCmd, sizeof(readCmd), dataBuf, sizeof(dataBuf));
+    uart_print(MSG_RESPUESTA);
+    uart_vector_print(longdataBuf,dataBuf);
+
+    int longrespuesta =  SHDLC_CalculateDataSize(dataBuf, sizeof(dataBuf));
+    // Convierte longrespuesta a una cadena para imprimir
+    char respuestaStr[BUFFER_SIZE_RESPONSE];
+    snprintf(respuestaStr, sizeof(respuestaStr), MENSAJE_SIZE_RESPUESTA, longrespuesta);
+    uart_print(respuestaStr);
+}
+
+
+
+/* === Fin de la documentación ================================================================ */
+
+
+
+
+
+
+
+
+
+
+

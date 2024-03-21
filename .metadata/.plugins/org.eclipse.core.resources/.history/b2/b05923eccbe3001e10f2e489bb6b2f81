@@ -1,0 +1,18 @@
+/*
+ * shdlc.h
+ *
+ *  Created on: 16-03-2024
+ *      Author: lgomez
+ */
+
+
+
+#ifndef INC_SHDLC_H_
+#define INC_SHDLC_H_
+
+#include <stdint.h>
+#include <stddef.h>
+
+int  calculateDataSize(const uint8_t* input, size_t inputSize);
+
+#endif /* INC_SHDLC_H_ */

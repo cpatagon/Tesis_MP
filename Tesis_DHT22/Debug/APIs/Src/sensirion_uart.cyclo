@@ -1,0 +1,6 @@
+sensirion_uart.c:21:9:sensirion_uart_select_port	1
+sensirion_uart.c:27:9:sensirion_uart_open	2
+sensirion_uart.c:42:9:sensirion_uart_close	1
+sensirion_uart.c:48:9:sensirion_uart_tx	2
+sensirion_uart.c:63:9:sensirion_uart_rx	2
+sensirion_uart.c:77:6:sensirion_sleep_usec	1

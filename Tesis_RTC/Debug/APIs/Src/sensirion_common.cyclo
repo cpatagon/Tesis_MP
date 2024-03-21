@@ -1,0 +1,11 @@
+sensirion_common.c:43:10:sensirion_common_bytes_to_uint16_t	1
+sensirion_common.c:47:10:sensirion_common_bytes_to_uint32_t	1
+sensirion_common.c:52:9:sensirion_common_bytes_to_int16_t	1
+sensirion_common.c:56:9:sensirion_common_bytes_to_int32_t	1
+sensirion_common.c:60:7:sensirion_common_bytes_to_float	1
+sensirion_common.c:70:6:sensirion_common_uint32_t_to_bytes	1
+sensirion_common.c:77:6:sensirion_common_uint16_t_to_bytes	1
+sensirion_common.c:82:6:sensirion_common_int32_t_to_bytes	1
+sensirion_common.c:89:6:sensirion_common_int16_t_to_bytes	1
+sensirion_common.c:94:6:sensirion_common_float_to_bytes	1
+sensirion_common.c:103:6:sensirion_common_copy_bytes	2

@@ -1,0 +1,5 @@
+sensirion_uart_hal.c:40:9:sensirion_uart_hal_init	2
+sensirion_uart_hal.c:50:9:sensirion_uart_hal_free	1
+sensirion_uart_hal.c:56:9:sensirion_uart_hal_tx	2
+sensirion_uart_hal.c:69:9:sensirion_uart_hal_rx	2
+sensirion_uart_hal.c:88:6:sensirion_uart_hal_sleep_usec	1

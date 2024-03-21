@@ -1,0 +1,200 @@
+/*
+ * Nombre del archivo: sps30_control.c
+ * Descripción: Implementación de funciones para controlar el sensor SPS30 a través de UART.
+ * Autor: Luis Gómez P.
+ * Derechos de Autor: (C) 2023 Luis Gómez P. EIRL
+ * Licencia: GNU General Public License v3.0
+ *
+ * Este programa es software libre: puedes redistribuirlo y/o modificarlo
+ * bajo los términos de la Licencia Pública General GNU publicada por
+ * la Free Software Foundation, ya sea la versión 3 de la Licencia, o
+ * (a tu elección) cualquier versión posterior.
+ *
+ * Este programa se distribuye con la esperanza de que sea útil,
+ * pero SIN NINGUNA GARANTÍA; sin siquiera la garantía implícita
+ * de COMERCIABILIDAD o APTITUD PARA UN PROPÓSITO PARTICULAR. Ver la
+ * Licencia Pública General GNU para más detalles.
+ *
+ * Deberías haber recibido una copia de la Licencia Pública General GNU
+ * junto con este programa. Si no es así, visita <http://www.gnu.org/licenses/>.
+ *
+ * SPDX-License-Identifier: GPL-3.0-only
+ *
+ */
+
+/** @file sps30_control.c
+ ** @brief Implementación de control para el sensor SPS30 utilizando UART.
+ **/
+
+/* === Inclusiones de archivos de cabecera ===================================================== */
+#include "sps30.h"
+#include "usart.h"
+#include "uart.h"
+#include "shdlc.h"
+#include <stdio.h> // Para sprintf
+#include <string.h> // Para strlen
+
+/* === Definiciones de macros ================================================================== */
+// Definiciones de comandos, frames y códigos de error específicos para el SPS30.
+
+#define BUFFER_SIZE 7
+#define BUFFER_SIZE_READ_DATA 60
+#define BUFFER_SIZE_SERIAL_NUMBER 30
+#define BUFFER_SIZE_NUMBER 30
+#define BUFFER_SIZE_STOP_MEASUREMENT 8
+#define BUFFER_SIZE_SLEEP 8
+
+/* === Declaraciones de tipos de datos privados ================================================ */
+
+/* === Declaraciones de variables privadas ===================================================== */
+
+/* === Declaraciones de funciones privadas ===================================================== */
+
+/* === Definiciones de variables públicas ====================================================== */
+
+/* === Definiciones de variables privadas ====================================================== */
+
+/* === Implementación de funciones privadas ==================================================== */
+
+/* === Implementación de funciones públicas ==================================================== */
+/**
+ * @brief Inicia la medición en el sensor SPS30.
+ *
+ * Envía un comando al sensor SPS30 para iniciar la medición de partículas en suspensión.
+ * La comunicación se realiza a través de UART.
+ */
+void SPS30_StartMeasurement(void) {
+    // Comando para iniciar la medición en modo UART
+    uint8_t startCmd[] = SPS30_FRAME_START_MEASUREMENT;
+    uint8_t dataBuf[BUFFER_SIZE];
+    uart_print("\n Inicio_medicion:");
+    uart_vector_print(sizeof(startCmd),startCmd);
+    memset(dataBuf, 0, BUFFER_SIZE); //Inicializa el buffer a cero.
+    uart_send_command(startCmd, sizeof(startCmd));
+    HAL_Delay(2); // Espera para que el sensor procese el comando
+    uart_receive_async(dataBuf, BUFFER_SIZE);
+    uart_print("\n Respuesta inicio:");
+    uart_vector_print(BUFFER_SIZE, dataBuf);
+    int longrespuesta =  calculateDataSize(dataBuf, BUFFER_SIZE);
+    // Convierte longrespuesta a una cadena para imprimir
+        char respuestaStr[50]; // Asegúrate de que el buffer sea suficientemente grande
+        snprintf(respuestaStr, sizeof(respuestaStr), "Longitud de respuesta: %d", longrespuesta);
+        uart_print(respuestaStr);
+}
+
+/**
+ * @brief Detiene la medición en el sensor SPS30.
+ *
+ * Envía un comando al sensor SPS30 para detener la medición de partículas en suspensión.
+ * Los datos previamente medidos se mantienen hasta la próxima activación del sensor.
+ */
+void SPS30_StopMeasurement(void) {
+    // Comando para leer los datos de medición
+    uint8_t readCmd[] = SPS30_FRAME_STOP_MEASUREMENT;
+    uint8_t dataBuf[BUFFER_SIZE_STOP_MEASUREMENT];
+    memset(dataBuf, 0, sizeof(dataBuf));
+    uart_print("\n Solicitar:");
+    uart_vector_print(sizeof(readCmd),readCmd);
+    uart_send_receive(readCmd, sizeof(readCmd),dataBuf, BUFFER_SIZE_STOP_MEASUREMENT);
+    uart_print("\n Respuesta:");
+    uart_vector_print(BUFFER_SIZE_STOP_MEASUREMENT,dataBuf);
+}
+
+
+/**
+ * @brief Pone el sensor SPS30 en modo de sueño (Sleep mode).
+ *
+ * Envía un comando al sensor SPS30 para reducir su consumo energético poniéndolo en modo de sueño.
+ * En este estado, el sensor consume menos energía pero no realiza mediciones.
+ */
+void SPS30_Sleep(void) {
+    // Comando para leer los datos de medición (Reemplaza con el comando real)
+    uint8_t readCmd[] = SPS30_FRAME_SLEEP;
+    uint8_t dataBuf[BUFFER_SIZE_SLEEP]; // Asegúrate de que este buffer sea adecuado para los datos
+    memset(dataBuf, 0, sizeof(dataBuf));
+    uart_print("\n Solicitar:");
+    uart_vector_print(6,readCmd);
+    uart_send_receive(readCmd, sizeof(readCmd),dataBuf, BUFFER_SIZE_STOP_MEASUREMENT);
+    uart_print("\n Respuesta:");
+    uart_vector_print(BUFFER_SIZE_SLEEP,dataBuf);
+}
+
+
+/**
+ * @brief Lee los datos de medición del sensor SPS30.
+ *
+ * Solicita al sensor SPS30 los datos de medición actuales y los recibe a través de UART.
+ * Los datos incluyen concentraciones de partículas de diferentes tamaños.
+ */
+void SPS30_ReadData(void) {
+    // Comando para leer los datos de medición (Reemplaza con el comando real)
+    uint8_t readCmd[] = SPS30_FRAME_READ_MEASUREMENT;
+    uint8_t dataBuf[BUFFER_SIZE_READ_DATA ]; // Asegúrate de que este buffer sea adecuado para los datos
+    memset(dataBuf, 0, sizeof(dataBuf));
+    uart_print("\n Solicitar:");
+    uart_vector_print(6,readCmd);
+    uart_send_receive(readCmd, sizeof(readCmd),dataBuf, BUFFER_SIZE_READ_DATA);
+    uart_print("\n Respuesta:");
+    uart_vector_print(BUFFER_SIZE_READ_DATA,dataBuf);
+}
+
+/**
+ * @brief Obtiene el número de serie del sensor SPS30.
+ *
+ * Envía un comando al sensor SPS30 para leer su número de serie y lo recibe a través de UART.
+ * El número de serie es único para cada sensor y puede ser usado para identificación.
+ */
+void SPS30_SerialNumber(void) {
+    // Comando para leer los datos de medición (Reemplaza con el comando real)
+    uint8_t readCmd[] = SPS30_FRAME_SERIAL_NUMBER;
+    uint8_t dataBuf[BUFFER_SIZE_SERIAL_NUMBER]; // Asegúrate de que este buffer sea adecuado para los datos
+    memset(dataBuf, 0, sizeof(dataBuf));
+    uart_print("\n Solicitar:");
+    uart_vector_print(6,readCmd);
+    uart_send_receive(readCmd, sizeof(readCmd),dataBuf, BUFFER_SIZE_SERIAL_NUMBER);
+    uart_print("\n Respuesta:");
+    uart_vector_print(BUFFER_SIZE_SERIAL_NUMBER,dataBuf);
+}
+
+
+
+/**
+ * @brief Despierta el sensor SPS30 del modo de sueño.
+ *
+ * Envía un pulso y un comando al sensor SPS30 para despertarlo del modo de sueño.
+ * Una vez despierto, el sensor está listo para realizar mediciones nuevamente.
+ */
+void SPS30_WakeUP(void) {
+    // Comando para leer los datos de medición (Reemplaza con el comando real)
+	uint8_t Pulse = SPS30_PULSE_WAKE_UP;
+	uint8_t readCmd[] = SPS30_FRAME_WAKE_UP;
+    uint8_t dataBuf[64]; // Asegúrate de que este buffer sea adecuado para los datos
+    memset(dataBuf, 0, sizeof(dataBuf));
+    uint8_t longdataBuf = sizeof(dataBuf);
+    uart_print("\n Solicitar:");
+    uart_vector_print(6,readCmd);
+    //HAL_UART_Transmit(&huart5, &Pulse, sizeof(Pulse), 100);
+    uart_send_command(Pulse,sizeof(Pulse));
+    HAL_Delay(50);
+
+    uart_send_receive(readCmd, sizeof(readCmd), dataBuf, sizeof(dataBuf));
+    //HAL_UART_Transmit(&huart5, readCmd, sizeof(readCmd), 100);
+    //HAL_UART_Receive(&huart5, dataBuf, 64,100); // Ajusta el timeout según sea necesario
+    uart_print("\n Respuesta:");
+    uart_vector_print(longdataBuf,dataBuf);
+}
+
+
+
+/* === Fin de la documentación ================================================================ */
+
+
+
+
+
+
+
+
+
+
+

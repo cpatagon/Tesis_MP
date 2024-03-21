@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Rename resource &apos;Tesis_DHT22/APIs/Inc/shdlc.h&apos; to &apos;shdl.h&apos;" description="Rename resource &apos;shdlc.h&apos;" flags="7" id="org.eclipse.ltk.core.refactoring.rename.resource" input="APIs/Inc/shdlc.h" name="shdl.h" stamp="1708967766820" updateReferences="true"/>
+</session>
