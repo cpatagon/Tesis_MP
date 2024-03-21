@@ -1,0 +1,55 @@
+
+	\centering
+	\shorthandoff{<>} % Desactivar caracteres problemáticos
+	\begin{tikzpicture}[ node distance=1cm]
+	% Nodes
+	\node (microcontroller)
+	[draw, rectangle, fill=blue!10!white, align=center]
+	{\textbf{Microcontrolador}\\ \rotatebox{90}{\faMicrochip}};
+
+	\node (sensor1)
+	[above right=of microcontroller, draw, rectangle, fill=red!10!white, align=center, yshift=0.2cm, xshift=0.3cm]
+	{Sensor de\\MP2,5 \faSmog};
+
+	\node (sensor2)
+	[right=of microcontroller, draw, rectangle, fill=red!10!white, align=center]
+	{Sensor de\\MP2,5 \faSmog};
+
+	\node (sensor3)
+	[below right=of microcontroller, draw, rectangle, fill=red!10!white, align=center, , yshift=-0.2cm, xshift=0.3cm]
+	{Sensor de\\MP2,5 \faSmog};
+
+	\node (storage)
+	[below=of microcontroller, draw, fill=yellow!10!white, rectangle, align=center]
+	{Sistema de \\ almacenamiento  \faSdCard }; % \faDatabase
+
+	\node (transmission)
+	[above=of microcontroller, draw, rectangle, align=center]
+	{Sistema de transmi-\\sión de datos  \faSignal};
+
+	\node (rtc)
+	[above left=of microcontroller, draw, rectangle, align=center, yshift=-1.5cm, xshift=-.33cm]
+	{RTC \faClock[regular]};
+
+	\node (power)
+	[below left=of microcontroller, draw, rectangle, align=center,yshift=-0.2cm, xshift=0.0cm]
+	{Fuente de\\poder \faBatteryQuarter};
+
+	\node (cabinet) 		[above right=of transmission,  xshift=-6.8cm,yshift=-0.7cm]     {\textbf{Gabinete} \faCloudSunRain};
+
+	% Bounding Box
+	\begin{scope}[on background layer]
+	\node[fill=gray!10,  draw, rectangle, rounded corners, fit=(cabinet) (sensor2) (rtc) (storage) (transmission)] {};
+	\end{scope}
+
+	% Arrows
+	\draw[<->] (microcontroller) -- (sensor1);
+	\draw[<->] (microcontroller) -- (sensor2);
+	\draw[<->] (microcontroller) -- (sensor3);
+	\draw[<->] (microcontroller) -- (storage);
+	\draw[<->] (microcontroller) -- (transmission);
+	\draw[->] (rtc) -- (microcontroller);
+	\draw[->] (power) -- (microcontroller);
+	\end{tikzpicture}
+	\shorthandon{<>} % Reactivar caracteres problemáticos
+	\caption{Esquema de bloques del instrumento.}

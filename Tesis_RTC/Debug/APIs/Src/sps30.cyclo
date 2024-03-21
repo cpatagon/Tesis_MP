@@ -1,6 +1,6 @@
-sps30.c:97:6:SPS30_StartMeasurement	1
+sps30.c:94:6:SPS30_StartMeasurement	1
 sps30.c:126:6:SPS30_StopMeasurement	1
-sps30.c:159:6:SPS30_Sleep	1
-sps30.c:184:6:SPS30_ReadData	1
-sps30.c:239:6:SPS30_SerialNumber	1
-sps30.c:265:6:SPS30_WakeUP	1
+sps30.c:164:6:SPS30_Sleep	1
+sps30.c:188:6:SPS30_ReadData	1
+sps30.c:245:6:SPS30_SerialNumber	1
+sps30.c:270:6:SPS30_WakeUP	1

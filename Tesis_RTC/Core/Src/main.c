@@ -18,6 +18,7 @@
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
+#include "i2c.h"
 #include "rtc.h"
 #include "usart.h"
 #include "gpio.h"
@@ -28,6 +29,7 @@
 #include <string.h> // Añade esto para strlen
 #include "sps30.h"
 #include "uart.h"
+#include "ds1307_for_stm32_hal.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -48,6 +50,10 @@
 /* Private variables ---------------------------------------------------------*/
 
 /* USER CODE BEGIN PV */
+
+// I2C_HandleTypeDef hi2c2;
+
+// UART_HandleTypeDef huart1;
 
 //	struct sps30_measurement m;
 //	char serial[SPS30_MAX_SERIAL_LEN];
@@ -99,6 +105,7 @@ int main(void) {
     MX_RTC_Init();
     MX_UART5_Init();
     MX_USART3_UART_Init();
+    MX_I2C2_Init();
     /* USER CODE BEGIN 2 */
 
     //	uint32_t counter = 0; // Variable del contador
@@ -113,18 +120,24 @@ int main(void) {
     HAL_UART_Transmit(&huart3, (uint8_t *)message, strlen((char *)message), HAL_MAX_DELAY);
 
     uart_print("\n*********************************************\n");
-    uart_print("WAKE UP :\n");
-    SPS30_WakeUP();
 
-    //    while (sensirion_uart_open() != 0) {
-    //           uart_print("UART init failed\n");
-    //           sensirion_sleep_usec(1000); /* sleep for 1s */
-    //       }
-    /* no funviona  */
-    //    while (sps30_probe() != 0) {
-    // 	   uart_print("\nSPS30 probando falla\n");
-    //        sensirion_sleep_usec(1000); /* sleep for 1s */
-    //    }
+    /* Lookup table for the days of week. */
+    const char * DAYS_OF_WEEK[7] = {"Sunday",   "Monday", "Tuesday", "Wednesday",
+                                    "Thursday", "Friday", "Saturday"};
+    /* Start DS1307 timing. Pass user I2C handle pointer to function. */
+    DS1307_Init(&hi2c2);
+    /* To test leap year correction. */
+
+    /*
+    DS1307_SetTimeZone(-3, 00);
+    DS1307_SetDate(21);
+    DS1307_SetMonth(3);
+    DS1307_SetYear(2024);
+    DS1307_SetDayOfWeek(4);
+    DS1307_SetHour(01);
+    DS1307_SetMinute(18);
+    DS1307_SetSecond(30);
+    */
 
     /* USER CODE END 2 */
 
@@ -132,12 +145,21 @@ int main(void) {
     /* USER CODE BEGIN WHILE */
     while (1) {
 
-        // uart_print("\nsps30_probe():\n");
-        // sps30_probe();
-
-        /*funciona */
-        // uart_print("WAKE UP:\n");
-        // sps30_wake_up();
+        uint8_t date = DS1307_GetDate();
+        uint8_t month = DS1307_GetMonth();
+        uint16_t year = DS1307_GetYear();
+        uint8_t dow = DS1307_GetDayOfWeek();
+        uint8_t hour = DS1307_GetHour();
+        uint8_t minute = DS1307_GetMinute();
+        uint8_t second = DS1307_GetSecond();
+        int8_t zone_hr = DS1307_GetTimeZoneHour();
+        uint8_t zone_min = DS1307_GetTimeZoneMin();
+        char buffer[100] = {0};
+        sprintf(buffer, "ISO8601 FORMAT: %04d-%02d-%02dT%02d:%02d:%02d%+03d:%02d  %s\n", year,
+                month, date, hour, minute, second, zone_hr, zone_min, DAYS_OF_WEEK[dow]);
+        /* May show warning below. Ignore and proceed. */
+        uart_print(buffer);
+        HAL_Delay(5000);
 
         /* USER CODE END WHILE */
 
@@ -145,51 +167,6 @@ int main(void) {
         // Enviar mensaje a través de UART
         // uart_print(buffer);
         uart_print("\n*********************************************\n");
-        uart_print("\n*********************************************\n");
-        uart_print("START MEASUREMENT:\n");
-        SPS30_StartMeasurement();
-
-        HAL_Delay(1500);
-
-        uart_print("\n*********************************************\n");
-        uart_print("READ DATA 1:\n");
-        SPS30_ReadData();
-
-        HAL_Delay(1000);
-
-        // uart_print("\n*********************************************\n");
-        // uart_print("READ DATA 2:\n");
-        SPS30_ReadData();
-
-        HAL_Delay(1000);
-
-        // uart_print("\n*********************************************\n");
-        // uart_print("READ DATA 3:\n");
-        SPS30_ReadData();
-
-        uart_print("\n*********************************************\n");
-        uart_print("SERIAL NUMBER:\n");
-        SPS30_SerialNumber();
-
-        HAL_Delay(100);
-
-        uart_print("\n*********************************************\n");
-        uart_print("STOP MEASUREMENT:\n");
-        SPS30_StopMeasurement();
-
-        HAL_Delay(100);
-
-        uart_print("\n*********************************************\n");
-        uart_print("SLEEP :\n");
-        SPS30_Sleep();
-
-        HAL_Delay(4000); // Espera 10 segundos antes de la próxima lectura
-
-        uart_print("\n*********************************************\n");
-        uart_print("WAKE UP :\n");
-        SPS30_WakeUP();
-
-        HAL_Delay(10000); // Espera 10 segundos antes de la próxima lectura
     }
     /* USER CODE END 3 */
 }

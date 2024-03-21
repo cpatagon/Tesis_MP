@@ -1,0 +1,107 @@
+%!TEX root = ../Tesis_Luis_Gomez.tex
+
+\chapter{Introducción General}
+\section{Introducción}
+
+En el contexto actual de gestión ambiental de las grandes ciudades, los instrumentos para medir el material particulado fino (MP2,5) se han convertido en herramientas esenciales. La creciente contaminación atmosférica se cuenta entre las principales causas de muertes prematuras en el mundo, de manera directa e indirecta. Sin embargo, lograr una medición precisa del MP2,5 representa un desafío significativo debido a los elevados costos y los complejos requisitos técnicos involucrados. En muchas áreas urbanas, especialmente en las menos desarrolladas, persiste la incertidumbre acerca de los niveles de exposición al MP2,5 a los que está sometida la población. En respuesta a este desafío, la presente propuesta de proyecto busca diseñar un instrumento para la medición del MP2,5 que, utilizando sensores de bajo costo, aspire a acercarse a los estándares de los equipos analíticos de alto rendimiento que se emplean actualmente, pero a un precio notablemente reducido. Este proyecto está íntimamente ligado a la trayectoria y formación profesional del autor del presente trabajo, como químico atmosférico especializado en la calidad del aire urbano.
+
+Con base en lo anteriormente expuesto, el objetivo de este proyecto es desarrollar un instrumento especializado en la medición del material particulado fino atmosférico urbano (MP2,5). Este instrumento no solo será capaz de almacenar y transmitir los datos recopilados, sino que también se espera superar la precisión que ofrecen los sensores de bajo costo actualmente en el mercado. Como innovación, se propone emplear un conjunto de tres sensores de MP2,5 en un mismo instrumento, coordinados por un microprocesador. Este último será encargado de realizar los cálculos, coordinar el almacenamiento y transmisión de los datos (ver figura \ref{fig:diagBloques}). Al utilizar tres sensores ópticos de MP2,5 operando en simultáneo, se prevé la obtención de mediciones replicadas, lo que permitirá ejecutar análisis estadísticos en tiempo real. Esto facilitará la obtención de promedios y la validación o descarte de datos atípicos. Se hipotetiza que esta estrategia mejorará tanto la precisión como la exactitud de las mediciones y, además, añadirá robustez al sistema. Es decir, si un sensor llegara a fallar, el mal funcionamiento podría detectarse rápidamente, mitigando el riesgo de una interrupción completa del sistema.
+
+Dada la creciente preocupación pública sobre la contaminación atmosférica urbana, tanto desde la perspectiva ambiental como de salud, es probable que autoridades a nivel municipal y gubernamental encuentren este tipo de sistemas de monitoreo altamente relevantes. Estos instrumentos, siendo más asequibles que las tecnologías de monitoreo tradicionales, facilitarían una mayor cobertura en áreas que actualmente carecen de mediciones. Este incremento en la cobertura permitiría evaluar la exposición humana al MP2,5 y podría aportar datos cruciales para monitorear la efectividad de políticas públicas, como los planes de descontaminación atmosférica implementados en diversas ciudades. Adicionalmente, estos sistemas pueden ayudar, como parte del fundamento, a la puesta en marcha de medidas preventivas y correctivas en relación con las emisiones y las concentraciones de MP2,5.
+
+Dentro del contexto de las soluciones para el monitoreo ambiental, estos dispositivos podrían ser una alternativa coste-efectiva para la gestión de la calidad del aire en entornos urbanos. Su asequibilidad económica, en comparación con los sistemas de monitoreo tradicionales, unida a una mayor precisión y robustez, podría ser valorada positivamente por entidades públicas. Se estima que su implementación facilitaría la gestión de la calidad del aire, sin generar una carga financiera excesiva en los recursos públicos.
+
+\section{Planteamiento del problema y alcance}
+
+\section{Motivación}
+
+\section{Conceptos generales}
+
+El funcionamiento de los sensores escogidos para esta investigación se fundamenta en el fenómeno de la difracción de luz láser. Concretamente, cuando una partícula en suspensión intercepta un haz láser, se produce una dispersión angular de la luz, la cual es proporcional al tamaño de la partícula involucrada. El patrón de dispersión óptica resultante se captura mediante un detector. Este enfoque presenta algunas mejoras sobre los métodos gravimétricos convencionales, al ofrecer ventajas como la reducción de costos y un incremento notable en la velocidad de muestreo. Sin embargo, es imperativo reconocer ciertas limitaciones inherentes a esta tecnología, tales como una menor precisión y exactitud en comparación con técnicas estándar. Cabe señalar que los instrumentos ópticos todavía no han obtenido la certificación de la Agencia de Protección Ambiental (EPA) como métodos analíticos estándar para la cuantificación de partículas finas en el aire.
+
+Para evaluar cómo el número de muestras (\( n \)) afecta la precisión y la exactitud de un sensor de material particulado fino, se deben considerar las métricas como media, varianza y desviación estándar de la muestra. De acuerdo a esto, la precisión se relaciona con la dispersión de las mediciones y se puede estimar mediante la desviación estándar muestral ($s$). A medida que \( n \) aumenta, el error estándar de la media (\( \text{SEM} \)) disminuye, lo cual se puede expresar como:
+
+\[
+\text{SEM} = \frac{s}{\sqrt{n}}
+\]
+
+Por lo tanto, un incremento en \( n \) resultará en una disminución de \( \text{SEM} \), mejorando así la precisión del instrumento.
+
+Para evaluar la exactitud, podemos usar el valor medio muestral (\( \bar{x} \)) y compararlo con un valor de referencia conocido (\( \mu \)). La diferencia absoluta entre \( \bar{x} \) y \( \mu \) proporciona una medida de la exactitud del instrumento. Dado que \( \bar{x} \) es un estimador insesgado de \( \mu \), su exactitud mejora con un mayor número de muestras, acercándose más al valor verdadero \( \mu \) debido al Teorema del Límite Central.
+
+\section{Estado del arte}
+
+\section{Objetivos y alcances}
+
+El propósito de este proyecto es desarrollar un equipo de medición de material particulado fino (MP2,5) que brinde una mayor precisión y exactitud que los sensores ópticos de bajo costo, mediante técnicas estadísticas de muestreo. El dispositivo también contará con características para almacenar y transmitir datos de forma remota. Se pretende elaborar una solución económica y fiable que pueda integrarse en las redes de control de calidad del aire, comúnmente gestionadas por autoridades ambientales o gobiernos locales. Con esto se espera contribuir a la mejora de la salud pública en entornos urbanos.
+
+En este proyecto se incluyen las siguientes actividades:
+
+\begin{enumerate}[label=\alph*)]
+	\item \textbf{Diseño y desarrollo del hardware}
+	\begin{itemize}
+		\item Diseño y dimensionamiento del hardware acorde a los niveles de consumo eléctrico, necesidad de cómputo, almacenamiento y transmisión de datos.
+		\item Selección y adquisición los sensores ópticos de MP2,5, y el microcontrolador central, adecuado a los requerimientos de cómputo y administración del sistema.
+		\item Diseño del sistema de almacenamiento de datos y del mecanismo de transmisión de información. Cada dato deberá contar con hora y fecha. Esta información debe ser proporcionada a partir de la implementación del RTC.
+		\item Dimensionamiento del sistema de alimentación eléctrica acorde a los requerimientos del hardaware .
+	\end{itemize}
+
+	\item \textbf{Desarrollo de software}
+	\begin{itemize}
+		\item Programación del microprocesador para realizar cálculos y transmitir resultados.
+		\item Desarrollo de algoritmos para efectuar estadísticas en tiempo real.
+		\item Generación de algoritmo para el chequeo del funcionamiento de los sensores e implementación de códigos de error en caso de que alguno falle.
+	\end{itemize}
+
+	\item \textbf{Pruebas de calibración}
+	\begin{itemize}
+		\item Calibración inicial de los sensores con estaciones de monitoreo de referencia o instrumentos de referencia disponibles.
+	\end{itemize}
+
+	\item \textbf{Recolección de datos}
+	\begin{itemize}
+		\item Periodo de recolección de datos de MP2,5 para evaluar el funcionamiento y rendimiento del dispositivo.
+	\end{itemize}
+
+	\item \textbf{Análisis de datos}
+	\begin{itemize}
+		\item Evaluación de precisión y exactitud del dispositivo en comparación con los métodos ópticos tradicionales y los de referencia.
+	\end{itemize}
+
+	\item \textbf{Documentación}
+	\begin{itemize}
+		\item Generación de informes técnicos que validen el rendimiento y robustez del dispositivo.
+	\end{itemize}
+
+\end{enumerate}
+
+El presente proyecto no incluye las siguientes actividades:
+
+\begin{enumerate}[label=\alph*)]
+
+	\item \textbf{Despliegue a gran escala}
+	\begin{itemize}
+		\item Este proyecto no incluye la fabricación en masa ni la distribución a gran escala del dispositivo.
+	\end{itemize}
+
+	\item \textbf{Mantenimiento prolongado}
+	\begin{itemize}
+		\item El mantenimiento del dispositivo más allá del periodo de pruebas no está incluido.
+	\end{itemize}
+
+	\item \textbf{Formación o capacitación}
+	\begin{itemize}
+		\item No se incluye la formación o capacitación para usuarios finales o para entidades gubernamentales.
+	\end{itemize}
+
+	\item \textbf{Adopción por parte de las autoridades}
+	\begin{itemize}
+		\item Aunque se espera que las autoridades consideren esta tecnología, su adopción oficial no está garantizada dentro del alcance de este proyecto.
+	\end{itemize}
+
+	\item \textbf{Investigaciones futuras}
+	\begin{itemize}
+		\item No se incluye el seguimiento a largo plazo de la efectividad del dispositivo en políticas públicas o investigaciones futuras.
+	\end{itemize}
+
+\end{enumerate}

@@ -1,0 +1,74 @@
+
+\documentclass[
+11pt, % The default document font size, options: 10pt, 11pt, 12pt
+%%codirector, % Uncomment to add a codirector to the title page
+]{charter} %{tesis}
+
+\makeatletter
+\newcommand{\mytwodigits}[1]{\two@digits{#1}}
+\makeatother
+
+\newcounter{reqCounter}
+\setcounter{reqCounter}{0}
+
+
+% Completar los siguintes Campos
+\namesoftware{MADCASE}
+\materia{Ingeniería de Software}
+\bimestre{tercer bimestre}
+\docentes{Alejandro Permingeat; Esteban	Volentini; Mariano Finochietto y Santiago Salamandri}
+\titulo{Arquitectura básica y el diseño preliminar \bigskip del software MADCASE}
+\posgrado{Carrera de Especialización en Sistemas Embebidos}
+\autor{Mg. Luis Alberto Gómez Parada}
+\director{Ing. Juan Manuel Cruz}
+\pertenenciaDirector{FIUBA}
+\codirector{}
+\pertenenciaCoDirector{}
+\cliente{}
+\empresaCliente{Centro del Clima y la Resiliencia CR2, Universidad de Chile}
+\fechaINICIO{23 de noviembre de 2023}		%Fecha de entrega
+\CODrequerimiento{MADCASE-RS01-ARQ}
+
+
+% Simula el aspecto de capítulos
+%\titleformat{\chapter}[display]
+%{\normalfont\huge\bfseries}{Capítulo \thesection}{20pt}{\Huge}
+
+% Ajusta el espaciado antes y después del título simulado de capítulo
+\titlespacing*{\chapter}{0pt}{50pt}{40pt}
+
+
+\begin{document}
+
+	%\maketitle
+	% TITULO
+    \makecustomtitle %
+
+    %INDICE
+	\tableofcontents
+
+	\newpage
+
+%% REGISTROS DE CAMBIOS
+\input{./reg_cambios/index.tex}
+
+	\pagebreak
+
+% Resumen y preliminares
+\input{Cap_00/index.tex}
+%Introducción General
+\input{Cap_01/index.tex}
+%Introducción Especifica
+\input{Cap_02/index.tex}
+%Diseño e implementación
+\input{Cap_03/index.tex}
+%Ensayo y Resultado
+\input{Cap_04/index.tex}
+%Concluciones
+\input{Cap_05/index.tex}
+%Anexos
+\input{Cap_06/index.tex}
+%Bibliografia
+\input{Cap_07/index.tex}
+
+\end{document}

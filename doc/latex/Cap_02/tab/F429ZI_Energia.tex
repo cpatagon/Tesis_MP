@@ -1,0 +1,12 @@
+\begin{table}[h]
+\centering
+\caption{Fuentes de alimentación externas}
+\label{tab:external_power_sources}
+\begin{tabular}{@{}llll@{}}
+\toprule
+Nombre de la entrada & Pines del conector & Rango de voltaje & Límite de corriente máxima \\ \midrule
+VIN                  & CN8 pin 15, CN11 pin 24 & 7 V a 12 V       & \begin{tabular}[c]{@{}l@{}}800 mA (VIN = 7 V)\\ 450 mA (7 V < VIN < 9 V)\\ 250 mA (9 V < VIN < 12 V)\end{tabular} \\ \midrule
+E5V                  & CN11 pin 6              & 4.75 V a 5.25 V  & 500 mA                    \\ \midrule
++3.3 V               & CN8 pin 7, CN11 pin 16  & 3 V a 3.6 V      & -                         \\ \bottomrule
+\end{tabular}
+\end{table}

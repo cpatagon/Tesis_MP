@@ -1,0 +1,88 @@
+%!TEX root = ../Tesis_Luis_Gomez.tex
+\chapter{Introducción específica}
+
+\section{Componentes Principales del Hardware}
+
+\subsection{Destalles del equipo, la tecnología del sensor y muestreo estadístico}
+
+En la figura \ref{fig:diagBloques}, se presenta el diagrama en bloques del instrumento. En él, se puede apreciar un microcontrolador central responsable de gestionar: tres sensores de MP2,5, encargados de medir el contaminante; un sistema de almacenamiento de datos local y un sistema encargado de la transmisión de los registros hacia un servidor remoto. Además, incluye un reloj de tiempo real (RTC) que registra el momento de cada medición y un sistema de alimentación, compatible con la red eléctrica.
+
+\begin{figure}[htpb]
+    \input{Cap_02/fig/esquema_general.tex}
+	\label{fig:diagBloques}
+\end{figure}
+
+
+\subsection{Plataforma de Desarrollo y Microcontrolador}
+
+Se incluye en el proyecto una placa STM32 NUCLEO-F429ZI (\ref{fig:placanucleof429zi}), perteneciente a la serie Nucleo-144, diseñada para facilitar el prototipado rápido con microcontroladores STM32. Equipada con el microcontrolador STM32F429ZI, la placa ofrece características avanzadas como una unidad de punto flotante (FPU), amplia memoria y diversos periféricos integrados. La compatibilidad con la interfaz ST Morpho y el sistema Arduino permite una expansión sencilla y acceso completo a señales de microcontrolador y periféricos.
+
+Destaca la capacidad de programación y depuración a través del ST-LINK/V2-1 integrado, lo que proporciona una solución eficiente para el desarrollo de aplicaciones. Con LEDs indicadores, botones de usuario y reset, y soporte para diversas fuentes de alimentación, incluida la USB, esta placa se orienta a aplicaciones de alta demanda de procesamiento y flexibilidad en la conexión de periféricos. Es adecuada para una variedad de aplicaciones, desde prototipos de IoT hasta sistemas embebidos complejos, destacándose por su escalabilidad y robustez como plataforma de desarrollo.
+
+La STM32 NUCLEO-F429ZI incluye numerosos puertos especializados que facilitan la conexión a dispositivos, como sensores de material particulado, esenciales en proyectos de monitoreo de calidad del aire y otras aplicaciones ambientales. Está equipada con interfaces como I2C, SPI, UART/USART, CAN y GPIOs, permitiendo la integración de múltiples sensores y dispositivos periféricos para expandir las funcionalidades del sistema conforme sea necesario.
+
+Estas interfaces refuerzan la capacidad de escalar la solución, permitiendo la integración de una variedad de sensores y módulos. Los sensores de material particulado, que generalmente utilizan interfaces I2C o UART, pueden ser fácilmente incorporados, posibilitando la recolección de datos ambientales en tiempo real y su integración en sistemas más amplios para análisis y monitoreo.
+
+De acuerdo al manual si el consumo de corriente total de la placa STM32 Nucleo-144 y sus shields excede los 300 mA, es obligatorio utilizar una fuente de alimentación externa, distinta al USB, para alimentar la placa. Las opciones de conexión para esta fuente de alimentación externa incluyen E5V, VIN, o +3.3 V.
+
+Se pueden usar tres opciones diferentes para la alimentación externa:
+
+\begin{itemize}
+	\item \textbf{VIN (7 V-12 V):} Un rango de voltaje que permite alimentar la placa a través de una fuente de alimentación externa regulada. Es útil para aplicaciones que requieren más potencia de la que el USB puede suministrar.
+
+	\item \textbf{E5V (5 V):} Otra opción de alimentación que puede ser más conveniente dependiendo de la disponibilidad de fuentes de alimentación de 5 V.
+
+	\item \textbf{+3.3 V:} Esta opción alimenta directamente el microcontrolador STM32 y otros componentes de la placa que operan a 3.3 V. Es importante notar que, cuando se usa esta opción de alimentación, la parte ST-LINK no recibe alimentación y por lo tanto no puede ser utilizada para programación o depuración.
+\end{itemize}
+
+% TODO: \usepackage{graphicx} required
+\begin{figure}
+	\centering
+	\includegraphics[width=0.7\linewidth]{Cap_02/fig/placanucleoF429ZI}
+	\caption{Placa de desarrollo utilizada para el proyecto , con sus principales puertos}
+	\label{fig:placanucleof429zi}
+\end{figure}
+
+\input{Cap_02/tab/F429ZI_Energia.tex}
+
+
+\subsection{Sensores Empleados}
+En esta subsección se describen los sensores utilizados en el proyecto, detallando sus características principales y el papel que desempeñan dentro del sistema.
+
+\subsubsection{Sensor de Partículas MP25}
+
+
+El SPS30, diseñado para operar  en ambientes con niveles elevados de contaminación, como áreas urbanas congestionadas o zonas industriales. Esta tecnología, facilita mediciones rápidas desde el inicio de su uso. Su vida útil, que supera los diez años. El sensor destaca por su precisión en la medición de PM2.5 y PM10, con una exactitud de ±2 µg/m³ y ±5 µg/m³ respectivamente, y por su capacidad para medir concentraciones de partículas que van desde 0.5 µg/m³ hasta 1000 µg/m³. Estas características lo hacen versátil para una amplia gama de aplicaciones, desde la monitorización de calidad del aire interior hasta la identificación de fugas en sistemas de filtración industrial.
+
+Además, su bajo consumo energético (ver tabla) lo hace adecuado para dispositivos portátiles o aquellos alimentados por batería. La facilidad de uso y la integración en sistemas de monitoreo. Posee compatibilidad con interfaces de comunicación estándar como I2C y UART. Estas interfaces permiten la recopilación y análisis de datos ambientales, facilitando la comunicación del sensor con necesidades específicas del proyecto.
+
+\input{Cap_02/tab/sensorSPS30_caracteristicas.tex}
+
+
+\input{Cap_02/tab/sensorSPS30_caraelectricas.tex}
+
+\subsubsection{Sensor de Humedad y Temperatura DHT22}
+
+El DHT22 es un sensor digital de bajo costo que mide la temperatura y la humedad relativa del ambiente. Es un sensor popular entre los aficionados a la electrónica y los makers debido a su facilidad de uso y su bajo precio.
+
+
+\input{Cap_02/tab/sensorDHT22_caracteristicas.tex}
+
+\subsubsection{Reloj de Tiempo Real (RTC) DS1307}
+El DS1307 es un módulo de reloj de tiempo real que proporciona información precisa sobre la hora y la fecha. Se utiliza para marcar temporalmente los datos recopilados por los sensores, lo cual es crucial para el análisis histórico. Estos sensores, junto con el módulo RTC, forman la base del sistema de monitoreo, permitiendo la recolección y análisis detallado de datos ambientales.
+
+\input{Cap_02/tab/RTC_caracteristicas.tex}
+
+
+
+\subsection{Módulos de Comunicación}
+
+
+
+
+
+\subsection{Fuentes de Alimentación}
+Información sobre la solución de energía del sistema, incluyendo baterías, paneles solares, o adaptadores de corriente, y cómo estos componentes aseguran un funcionamiento continuo.
+
+\subsection{Otros Componentes}
+Mención de cualquier otro hardware relevante para el proyecto, como pantallas, LEDs, botones, etc., y su rol en la interacción del usuario o en la visualización de datos.

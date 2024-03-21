@@ -5,16 +5,19 @@
 
 # Add inputs and outputs from these tool invocations to the build variables
 C_SRCS += \
+../APIs/Src/ds1307_for_stm32_hal.c \
 ../APIs/Src/shdlc.c \
 ../APIs/Src/sps30.c \
 ../APIs/Src/uart.c
 
 OBJS += \
+./APIs/Src/ds1307_for_stm32_hal.o \
 ./APIs/Src/shdlc.o \
 ./APIs/Src/sps30.o \
 ./APIs/Src/uart.o
 
 C_DEPS += \
+./APIs/Src/ds1307_for_stm32_hal.d \
 ./APIs/Src/shdlc.d \
 ./APIs/Src/sps30.d \
 ./APIs/Src/uart.d
@@ -27,6 +30,6 @@ APIs/Src/%.o APIs/Src/%.su APIs/Src/%.cyclo: ../APIs/Src/%.c APIs/Src/subdir.mk
 clean: clean-APIs-2f-Src
 
 clean-APIs-2f-Src:
-	-$(RM) ./APIs/Src/shdlc.cyclo ./APIs/Src/shdlc.d ./APIs/Src/shdlc.o ./APIs/Src/shdlc.su ./APIs/Src/sps30.cyclo ./APIs/Src/sps30.d ./APIs/Src/sps30.o ./APIs/Src/sps30.su ./APIs/Src/uart.cyclo ./APIs/Src/uart.d ./APIs/Src/uart.o ./APIs/Src/uart.su
+	-$(RM) ./APIs/Src/ds1307_for_stm32_hal.cyclo ./APIs/Src/ds1307_for_stm32_hal.d ./APIs/Src/ds1307_for_stm32_hal.o ./APIs/Src/ds1307_for_stm32_hal.su ./APIs/Src/shdlc.cyclo ./APIs/Src/shdlc.d ./APIs/Src/shdlc.o ./APIs/Src/shdlc.su ./APIs/Src/sps30.cyclo ./APIs/Src/sps30.d ./APIs/Src/sps30.o ./APIs/Src/sps30.su ./APIs/Src/uart.cyclo ./APIs/Src/uart.d ./APIs/Src/uart.o ./APIs/Src/uart.su
 
 .PHONY: clean-APIs-2f-Src

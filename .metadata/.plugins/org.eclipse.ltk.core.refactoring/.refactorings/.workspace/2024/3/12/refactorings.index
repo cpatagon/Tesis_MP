@@ -7,3 +7,12 @@
 1710984341189	Delete resource 'Tesis_RTC/APIs/Inc/sps_git_version.h'
 1710984350395	Delete 4 resources
 1710984355612	Delete resource 'Tesis_RTC/APIs/Src/sps_git_version.c'
+1710991495883	Delete resource 'Tesis_RTC/APIs/Inc/tm_stm32f4_i2c.h'
+1710991500503	Delete resource 'Tesis_RTC/APIs/Src/tm_stm32f4_i2c.c'
+1710991510445	Delete 4 resources
+1710991535086	Delete resource 'Tesis_RTC/APIs/Inc/attributes.h'
+1710991541466	Delete resource 'Tesis_RTC/APIs/Inc/defines.h'
+1710994411126	Delete resource 'Tesis_RTC/Debug/Tesis_UART.elf'
+1710994498298	Delete resource 'Tesis_RTC/Tesis_RTC Debug.launch'
+1710994520812	Delete 8 resources
+1711039017022	Delete resource 'Tesis_RTC/APIs/Inc/tooli2c.h'
