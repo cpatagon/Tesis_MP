@@ -64,4 +64,3 @@ void uart_send_command(const uint8_t *command, uint16_t commandSize);
 void uart_receive_async(uint8_t *dataBuffer, uint16_t bufferSize);
 
 #endif /* INC_UART_H_ */
-

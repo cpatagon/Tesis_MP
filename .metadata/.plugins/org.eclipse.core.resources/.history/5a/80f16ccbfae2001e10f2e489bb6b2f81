@@ -85,4 +85,3 @@ void uart_vector_print(uint16_t data_len, const uint8_t* data) {
 }
 
 /* === Fin de la documentación ================================================================ */
-

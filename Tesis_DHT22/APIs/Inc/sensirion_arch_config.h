@@ -8,7 +8,6 @@
 #ifndef INC_SENSIRION_ARCH_CONFIG_H_
 #define INC_SENSIRION_ARCH_CONFIG_H_
 
-
 #ifndef SENSIRION_ARCH_CONFIG_H
 #define SENSIRION_ARCH_CONFIG_H
 
@@ -19,9 +18,9 @@
  * TODO: change this to a more targetted selection, i.e. __AVR_ATmega328P__ etc vs __AVR__
  */
 #ifdef __AVR__
-  #ifndef ARDUINO_ARCH_MEGAAVR
-     #define SPS30_USE_ALT_I2C
-  #endif
+#ifndef ARDUINO_ARCH_MEGAAVR
+#define SPS30_USE_ALT_I2C
+#endif
 #endif /* __AVR__ */
 
 /*
@@ -30,10 +29,8 @@
  */
 #ifdef ESP8266
 #include <core_version.h>
-#if defined(ARDUINO_ESP8266_RELEASE_2_3_0) || \
-    defined(ARDUINO_ESP8266_RELEASE_2_4_0) || \
-    defined(ARDUINO_ESP8266_RELEASE_2_4_1) || \
-    defined(ARDUINO_ESP8266_RELEASE_2_4_2)
+#if defined(ARDUINO_ESP8266_RELEASE_2_3_0) || defined(ARDUINO_ESP8266_RELEASE_2_4_0) ||            \
+    defined(ARDUINO_ESP8266_RELEASE_2_4_1) || defined(ARDUINO_ESP8266_RELEASE_2_4_2)
 #define SPS30_LIMITED_I2C_BUFFER_SIZE
 #endif
 #endif /* ESP8266 */
@@ -81,8 +78,8 @@
 #else
 
 #ifndef bool
-#define bool int
-#define true 1
+#define bool  int
+#define true  1
 #define false 0
 #endif /* bool */
 

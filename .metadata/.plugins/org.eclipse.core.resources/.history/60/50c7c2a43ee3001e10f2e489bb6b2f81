@@ -103,4 +103,3 @@ void uart_send_receive(const uint8_t *command, uint16_t commandSize, uint8_t *da
 
 
 /* === Fin de la documentación ================================================================ */
-

@@ -172,9 +172,3 @@ void SHDLC_processPMData(uint8_t *data) {
     *pm4 = bytesToFloat(&data[8]);
     *pm10 = bytesToFloat(&data[12]);
 }
-
-
-
-
-
-

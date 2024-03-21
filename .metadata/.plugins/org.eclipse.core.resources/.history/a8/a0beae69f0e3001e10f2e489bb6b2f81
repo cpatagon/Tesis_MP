@@ -110,4 +110,3 @@ int SHDLC_CalculateDataSize(const uint8_t* input, size_t inputSize) {
 	    size_t dataLength = end - start;
 	    return dataLength;
 }
-

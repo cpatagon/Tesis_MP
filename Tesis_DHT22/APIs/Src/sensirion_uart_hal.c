@@ -33,7 +33,7 @@
 #include "sensirion_common.h"
 #include "sensirion_config.h"
 
-#include "stm32f4xx_hal.h" // Asegúrate de ajustar esto para tu familia STM32 específica
+#include "stm32f4xx_hal.h"        // Asegúrate de ajustar esto para tu familia STM32 específica
 extern UART_HandleTypeDef huart5; // Asegúrate de que esto coincide con tu configuración de UART
 extern UART_HandleTypeDef huart3;
 
@@ -53,35 +53,34 @@ int16_t sensirion_uart_hal_free() {
     return 0;
 }
 
-int16_t sensirion_uart_hal_tx(uint16_t data_len, const uint8_t* data) {
+int16_t sensirion_uart_hal_tx(uint16_t data_len, const uint8_t * data) {
     // Transmitir datos usando HAL_UART_Transmit
-	uart_print(" (1) -->");
-	uart_vector_print(data_len, data);
-//	uart_print("\n");
+    uart_print(" (1) -->");
+    uart_vector_print(data_len, data);
+    //	uart_print("\n");
     if (HAL_UART_Transmit_IT(&huart5, (uint8_t *)data, data_len) == HAL_OK) {
-    	//uart_print("si transmite 1\n");
+        // uart_print("si transmite 1\n");
         return data_len; // Retornar el número de bytes transmitidos
     }
     uart_print("no transmite 1\n");
     return -1; // Error en la transmisión
 }
 
-int16_t sensirion_uart_hal_rx(uint16_t max_data_len, uint8_t* data) {
-	max_data_len=100;
+int16_t sensirion_uart_hal_rx(uint16_t max_data_len, uint8_t * data) {
+    max_data_len = 100;
     // Recibir datos usando HAL_UART_Receive
-	// memset(data, 0, max_data_len);
-    if (HAL_UART_Receive_IT(&huart5, (uint8_t *)data,max_data_len) == HAL_OK) {
+    // memset(data, 0, max_data_len);
+    if (HAL_UART_Receive_IT(&huart5, (uint8_t *)data, max_data_len) == HAL_OK) {
 
-   	uart_print("si recive 1\n");
-    	uart_print("<-- (1)");
-    	uart_vector_print(max_data_len,data);
-    	uart_print("\n");
+        uart_print("si recive 1\n");
+        uart_print("<-- (1)");
+        uart_vector_print(max_data_len, data);
+        uart_print("\n");
         return max_data_len; // Puede necesitar ajustar basado en bytes reales recibidos
-    }
-    else{
-    uart_print("no recive 1\n");
-//    uart_print(HAL_UART_GetError(&huart5));
-    return -1; // Error en la recepción
+    } else {
+        uart_print("no recive 1\n");
+        //    uart_print(HAL_UART_GetError(&huart5));
+        return -1; // Error en la recepción
     }
 }
 

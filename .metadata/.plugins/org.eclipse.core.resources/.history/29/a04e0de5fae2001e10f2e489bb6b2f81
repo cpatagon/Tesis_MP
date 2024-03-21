@@ -97,4 +97,3 @@ void uart_receive_async(uint8_t *dataBuffer, uint16_t bufferSize) {
 
 
 /* === Fin de la documentación ================================================================ */
-

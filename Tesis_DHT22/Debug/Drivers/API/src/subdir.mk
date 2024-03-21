@@ -3,21 +3,21 @@
 # Toolchain: GNU Tools for STM32 (10.3-2021.10)
 ################################################################################
 
-# Add inputs and outputs from these tool invocations to the build variables 
+# Add inputs and outputs from these tool invocations to the build variables
 C_SRCS += \
 ../Drivers/API/src/shdlc.c \
 ../Drivers/API/src/shdlc_frame.c \
-../Drivers/API/src/sps30.c 
+../Drivers/API/src/sps30.c
 
 OBJS += \
 ./Drivers/API/src/shdlc.o \
 ./Drivers/API/src/shdlc_frame.o \
-./Drivers/API/src/sps30.o 
+./Drivers/API/src/sps30.o
 
 C_DEPS += \
 ./Drivers/API/src/shdlc.d \
 ./Drivers/API/src/shdlc_frame.d \
-./Drivers/API/src/sps30.d 
+./Drivers/API/src/sps30.d
 
 
 # Each subdirectory must supply rules for building sources it contributes
@@ -30,4 +30,3 @@ clean-Drivers-2f-API-2f-src:
 	-$(RM) ./Drivers/API/src/shdlc.cyclo ./Drivers/API/src/shdlc.d ./Drivers/API/src/shdlc.o ./Drivers/API/src/shdlc.su ./Drivers/API/src/shdlc_frame.cyclo ./Drivers/API/src/shdlc_frame.d ./Drivers/API/src/shdlc_frame.o ./Drivers/API/src/shdlc_frame.su ./Drivers/API/src/sps30.cyclo ./Drivers/API/src/sps30.d ./Drivers/API/src/sps30.o ./Drivers/API/src/sps30.su
 
 .PHONY: clean-Drivers-2f-API-2f-src
-

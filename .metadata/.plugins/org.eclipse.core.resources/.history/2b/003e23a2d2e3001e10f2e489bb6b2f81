@@ -61,4 +61,3 @@ int calculateDataSize(const uint8_t* input, size_t inputSize);
 Shdlc_FrameMiso SHDLC_GetFrameMiso(void);
 
 #endif /* INC_SHDLC_H_ */
-

@@ -3,7 +3,7 @@
 # Toolchain: GNU Tools for STM32 (10.3-2021.10)
 ################################################################################
 
-# Add inputs and outputs from these tool invocations to the build variables 
+# Add inputs and outputs from these tool invocations to the build variables
 C_SRCS += \
 ../APIs/Src/sensirion_common.c \
 ../APIs/Src/sensirion_shdlc.c \
@@ -11,7 +11,7 @@ C_SRCS += \
 ../APIs/Src/sensirion_uart_hal.c \
 ../APIs/Src/sps30.c \
 ../APIs/Src/sps_git_version.c \
-../APIs/Src/uart.c 
+../APIs/Src/uart.c
 
 OBJS += \
 ./APIs/Src/sensirion_common.o \
@@ -20,7 +20,7 @@ OBJS += \
 ./APIs/Src/sensirion_uart_hal.o \
 ./APIs/Src/sps30.o \
 ./APIs/Src/sps_git_version.o \
-./APIs/Src/uart.o 
+./APIs/Src/uart.o
 
 C_DEPS += \
 ./APIs/Src/sensirion_common.d \
@@ -29,7 +29,7 @@ C_DEPS += \
 ./APIs/Src/sensirion_uart_hal.d \
 ./APIs/Src/sps30.d \
 ./APIs/Src/sps_git_version.d \
-./APIs/Src/uart.d 
+./APIs/Src/uart.d
 
 
 # Each subdirectory must supply rules for building sources it contributes
@@ -42,4 +42,3 @@ clean-APIs-2f-Src:
 	-$(RM) ./APIs/Src/sensirion_common.cyclo ./APIs/Src/sensirion_common.d ./APIs/Src/sensirion_common.o ./APIs/Src/sensirion_common.su ./APIs/Src/sensirion_shdlc.cyclo ./APIs/Src/sensirion_shdlc.d ./APIs/Src/sensirion_shdlc.o ./APIs/Src/sensirion_shdlc.su ./APIs/Src/sensirion_uart.cyclo ./APIs/Src/sensirion_uart.d ./APIs/Src/sensirion_uart.o ./APIs/Src/sensirion_uart.su ./APIs/Src/sensirion_uart_hal.cyclo ./APIs/Src/sensirion_uart_hal.d ./APIs/Src/sensirion_uart_hal.o ./APIs/Src/sensirion_uart_hal.su ./APIs/Src/sps30.cyclo ./APIs/Src/sps30.d ./APIs/Src/sps30.o ./APIs/Src/sps30.su ./APIs/Src/sps_git_version.cyclo ./APIs/Src/sps_git_version.d ./APIs/Src/sps_git_version.o ./APIs/Src/sps_git_version.su ./APIs/Src/uart.cyclo ./APIs/Src/uart.d ./APIs/Src/uart.o ./APIs/Src/uart.su
 
 .PHONY: clean-APIs-2f-Src
-

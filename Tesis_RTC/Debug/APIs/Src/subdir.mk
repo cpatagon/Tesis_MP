@@ -3,21 +3,21 @@
 # Toolchain: GNU Tools for STM32 (10.3-2021.10)
 ################################################################################
 
-# Add inputs and outputs from these tool invocations to the build variables 
+# Add inputs and outputs from these tool invocations to the build variables
 C_SRCS += \
 ../APIs/Src/shdlc.c \
 ../APIs/Src/sps30.c \
-../APIs/Src/uart.c 
+../APIs/Src/uart.c
 
 OBJS += \
 ./APIs/Src/shdlc.o \
 ./APIs/Src/sps30.o \
-./APIs/Src/uart.o 
+./APIs/Src/uart.o
 
 C_DEPS += \
 ./APIs/Src/shdlc.d \
 ./APIs/Src/sps30.d \
-./APIs/Src/uart.d 
+./APIs/Src/uart.d
 
 
 # Each subdirectory must supply rules for building sources it contributes
@@ -30,4 +30,3 @@ clean-APIs-2f-Src:
 	-$(RM) ./APIs/Src/shdlc.cyclo ./APIs/Src/shdlc.d ./APIs/Src/shdlc.o ./APIs/Src/shdlc.su ./APIs/Src/sps30.cyclo ./APIs/Src/sps30.d ./APIs/Src/sps30.o ./APIs/Src/sps30.su ./APIs/Src/uart.cyclo ./APIs/Src/uart.d ./APIs/Src/uart.o ./APIs/Src/uart.su
 
 .PHONY: clean-APIs-2f-Src
-

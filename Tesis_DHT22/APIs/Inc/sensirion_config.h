@@ -65,5 +65,4 @@
  * typedef unsigned char uint8_t;
  */
 
-
 #endif /* __STDC_VERSION__ */

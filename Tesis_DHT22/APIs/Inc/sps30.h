@@ -38,10 +38,10 @@ extern "C" {
 
 #include "sensirion_arch_config.h"
 
-#define SPS30_MAX_SERIAL_LEN 32
-#define SPS30_ERR_NOT_ENOUGH_DATA (-1)
-#define SPS30_ERR_STATE_MASK (0x100)
-#define SPS30_IS_ERR_STATE(err_code) (((err_code) | 0xff) == 0x1ff)
+#define SPS30_MAX_SERIAL_LEN          32
+#define SPS30_ERR_NOT_ENOUGH_DATA     (-1)
+#define SPS30_ERR_STATE_MASK          (0x100)
+#define SPS30_IS_ERR_STATE(err_code)  (((err_code) | 0xff) == 0x1ff)
 #define SPS30_GET_ERR_STATE(err_code) ((err_code)&0xff)
 
 struct sps30_measurement {
@@ -65,7 +65,7 @@ struct sps30_version_information {
     uint8_t shdlc_minor;
 };
 
-void SPS30_StartMeasurement(void) ;
+void SPS30_StartMeasurement(void);
 
 // Función para leer los datos de medición del SPS30
 void SPS30_ReadData(void);
@@ -74,7 +74,7 @@ void SPS30_ReadData(void);
  * sps_get_driver_version() - Return the driver version
  * Return:  Driver version string
  */
-const char* sps_get_driver_version(void);
+const char * sps_get_driver_version(void);
 
 /**
  * sps30_probe() - check if SPS sensor is available and initialize it
@@ -92,7 +92,7 @@ int16_t sps30_probe(void);
  *          terminated). Must be at least SPS_MAX_SERIAL_LEN long.
  * Return:  0 on success, an error code otherwise
  */
-int16_t sps30_get_serial(char* serial);
+int16_t sps30_get_serial(char * serial);
 
 /**
  * sps30_start_measurement() - start measuring
@@ -118,7 +118,7 @@ int16_t sps30_stop_measurement(void);
  *
  * Return:  0 on success, an error code otherwise
  */
-int16_t sps30_read_measurement(struct sps30_measurement* measurement);
+int16_t sps30_read_measurement(struct sps30_measurement * measurement);
 
 /**
  * sps30_sleep() - Enter sleep mode with minimum power consumption.
@@ -150,7 +150,7 @@ int16_t sps30_wake_up(void);
  * @interval_seconds:   Memory where the interval in seconds is stored
  * Return:              0 on success, an error code otherwise
  */
-int16_t sps30_get_fan_auto_cleaning_interval(uint32_t* interval_seconds);
+int16_t sps30_get_fan_auto_cleaning_interval(uint32_t * interval_seconds);
 
 /**
  * sps30_set_fan_auto_cleaning_interval() - set the current auto-cleaning
@@ -175,7 +175,7 @@ int16_t sps30_set_fan_auto_cleaning_interval(uint32_t interval_seconds);
  * @interval_days:  Memory where the interval in days is stored
  * Return:          0 on success, an error code otherwise
  */
-int16_t sps30_get_fan_auto_cleaning_interval_days(uint8_t* interval_days);
+int16_t sps30_get_fan_auto_cleaning_interval_days(uint8_t * interval_days);
 
 /**
  * sps30_set_fan_auto_cleaning_interval_days() - convenience function to set the
@@ -202,8 +202,7 @@ int16_t sps30_start_manual_fan_cleaning(void);
  *
  * Return:          0 on success, an error code otherwise
  */
-int16_t
-sps30_read_version(struct sps30_version_information* version_information);
+int16_t sps30_read_version(struct sps30_version_information * version_information);
 
 /**
  * sps30_reset() - reset the SGP30

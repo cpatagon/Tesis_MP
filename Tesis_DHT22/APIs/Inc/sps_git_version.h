@@ -8,6 +8,6 @@
 #ifndef INC_SPS_GIT_VERSION_H_
 #define INC_SPS_GIT_VERSION_H_
 
-extern const char* SPS_DRV_VERSION_STR;
+extern const char * SPS_DRV_VERSION_STR;
 
 #endif /* INC_SPS_GIT_VERSION_H_ */

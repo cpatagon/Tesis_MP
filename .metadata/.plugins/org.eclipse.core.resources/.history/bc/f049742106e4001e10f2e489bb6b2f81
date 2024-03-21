@@ -172,9 +172,3 @@ void SHDLC_llenarConcentraciones(ConcentracionesPM *concentraciones, uint8_t *da
     concentraciones->pm4_0 = bytesToFloat(&data[8]);
     concentraciones->pm10 = bytesToFloat(&data[12]);
 }
-
-
-
-
-
-

@@ -37,7 +37,7 @@
  *
  * @param message Cadena de caracteres para enviar.
  */
-void uart_print(const char *message);
+void uart_print(const char * message);
 
 /**
  * @brief Imprime un vector de datos como una cadena de hexadecimales a través de UART3.
@@ -45,7 +45,7 @@ void uart_print(const char *message);
  * @param data_len Longitud del vector de datos.
  * @param data Puntero al vector de datos a imprimir.
  */
-void uart_vector_print(uint16_t data_len, const uint8_t* data);
+void uart_vector_print(uint16_t data_len, const uint8_t * data);
 
 /**
  * @brief Envía un comando a través de UART5 y espera una respuesta.
@@ -53,7 +53,7 @@ void uart_vector_print(uint16_t data_len, const uint8_t* data);
  * @param command Puntero al comando a enviar.
  * @param commandSize Tamaño del comando a enviar.
  */
-void uart_send_command(const uint8_t *command, uint16_t commandSize);
+void uart_send_command(const uint8_t * command, uint16_t commandSize);
 
 /**
  * @brief Inicia la recepción de datos de forma asíncrona a través de UART5.
@@ -61,10 +61,9 @@ void uart_send_command(const uint8_t *command, uint16_t commandSize);
  * @param dataBuffer Buffer para almacenar los datos recibidos.
  * @param bufferSize Tamaño del buffer de datos.
  */
-void uart_receive_async(uint8_t *dataBuffer, uint16_t bufferSize);
+void uart_receive_async(uint8_t * dataBuffer, uint16_t bufferSize);
 
-
-void uart_send_receive(const uint8_t *command, uint16_t commandSize, uint8_t *dataBuffer, uint16_t bufferSize);
+void uart_send_receive(const uint8_t * command, uint16_t commandSize, uint8_t * dataBuffer,
+                       uint16_t bufferSize);
 
 #endif /* INC_UART_H_ */
-

@@ -135,4 +135,3 @@ int SHDLC_CalculateDataSize(const uint8_t* input, size_t inputSize);
 size_t revertByteStuffing(const uint8_t* stuffedData, size_t stuffedSize, uint8_t* originalData) ;
 
 #endif /* INC_SHDLC_H_ */
-

@@ -154,4 +154,3 @@ size_t revertByteStuffing(const uint8_t* stuffedData, size_t stuffedSize, uint8_
 
     return originalIndex; // Retorna el tamaño del arreglo revertido
 }
-
